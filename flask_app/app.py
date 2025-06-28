@@ -16,6 +16,7 @@ from mlflow.tracking import MlflowClient
 import matplotlib.dates as mdates
 import pickle
 
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
