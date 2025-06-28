@@ -1,138 +1,119 @@
+# End-to-end-Youtube-Sentiment
 
 
----
+conda create -n youtube python=3.11 -y
 
-# ☁️ MLflow on AWS – My Personal Setup Guide (with a little help from AI 🤖)
+conda activate youtube
 
-Hey there! 👋
-This is a step-by-step guide I put together to help you set up your own **MLflow tracking server on AWS**. I built and tested this myself — with a little help from **ChatGPT** to organize the content and make it easier to follow.
+pip install -r requirements.txt
 
-If you're working with ML experiments and want to keep track of them on your own cloud setup, this guide is for you.
 
----
+## DVC
 
-## 🔧 What You’ll Set Up
+dvc init
 
-✅ A public **MLflow server** running on **Amazon EC2**
-✅ An **S3 bucket** as the artifact storage backend
-✅ A reusable setup for experiment tracking from anywhere
+dvc repro
 
----
+dvc dag
 
-## 🛠️ Step-by-Step Guide
 
-### 🪪 Step 1: Configure AWS
 
-1. Log in to your [AWS Console](https://console.aws.amazon.com/).
+## AWS
 
-2. Create an **IAM user** with `AdministratorAccess`.
+aws configure
 
-3. On your local machine, run:
 
-   ```bash
-   aws configure
-   ```
 
-   Provide:
+### Json data demo in postman
 
-   * Your AWS Access Key ID
-   * Secret Access Key
-   * Default region (e.g., `us-east-1`)
-   * Output format (optional)
+http://localhost:5000/predict
 
-4. Create a new **S3 bucket** to store MLflow artifacts
-   (e.g., `mlflow-test-23`)
-
----
-
-### 💻 Step 2: Launch EC2 and Prepare the Environment
-
-1. Launch an **Ubuntu EC2 instance** (t2.micro is fine).
-
-2. In the **Security Group**, allow:
-
-   * **Port 5000** (for the MLflow UI)
-
-3. Connect to the instance via SSH:
-
-   ```bash
-   ssh ubuntu@<your-ec2-public-dns>
-   ```
-
-4. Inside the EC2 instance, run:
-
-   ```bash
-   sudo apt update
-   sudo apt install -y python3-pip virtualenv pipenv
-
-   mkdir mlflow && cd mlflow
-
-   pipenv install mlflow awscli boto3
-   pipenv shell
-
-   aws configure  # enter credentials again inside EC2
-   ```
-
----
-
-### 🚀 Step 3: Run the MLflow Server
-
-Once everything is installed, launch your tracking server:
-
-```bash
-mlflow server \
-  --host 0.0.0.0 \
-  --port 5000 \
-  --default-artifact-root s3://mlflow-test-23
+```python
+{
+    "comments": ["This video is awsome! I loved a lot", "Very bad explanation. poor video"]
+}
 ```
 
-Leave this running — it’s now serving your tracking UI!
 
----
 
-### 🌍 Step 4: Access Your Server & Start Logging
+chrome://extensions
 
-1. In a browser, open:
 
-   ```
-   http://<your-ec2-public-dns>:5000
-   ```
+## how to get youtube api key from gcp:
 
-2. On your **local machine**, point your MLflow client to the server:
+https://www.youtube.com/watch?v=i_FdiQMwKiw
 
-   ```bash
-   export MLFLOW_TRACKING_URI=http://<your-ec2-public-dns>:5000
-   ```
 
-3. Run your MLflow code as usual — and your experiments will now be tracked remotely! 🧪
 
----
+# AWS-CICD-Deployment-with-Github-Actions
 
-## 🧠 Extra Notes
+## 1. Login to AWS console.
 
-* 🔒 **Security**: For real-world usage, consider securing your server with a reverse proxy (Nginx + HTTPS).
-* 💸 **Cost Reminder**: Shut down or stop your EC2 when not using it.
-* 📈 **Team Use**: Share the tracking URI so teammates can log runs too!
+## 2. Create IAM user for deployment
 
----
+	#with specific access
 
-## 🙌 Why I Made This
+	1. EC2 access : It is virtual machine
 
-I was exploring how to host my own MLflow server and decided to document the process clearly for future reference — and for anyone else who’s trying to do the same.
+	2. ECR: Elastic Container registry to save your docker image in aws
 
-I used **perplexity** to help format and improve the guide. It made everything more readable and user-friendly. Highly recommend using tools like this when you want to turn raw notes into a clean walkthrough!
 
----
+	#Description: About the deployment
 
-## 📚 Resources
+	1. Build docker image of the source code
 
-* [MLflow Documentation](https://mlflow.org/docs/latest/index.html)
-* [AWS EC2](https://aws.amazon.com/ec2/)
-* [S3 Pricing](https://aws.amazon.com/s3/pricing/)
-* [ChatGPT](https://chat.openai.com/)
+	2. Push your docker image to ECR
 
----
+	3. Launch Your EC2 
 
-If this guide helped you, feel free to ⭐️ the repo or open a PR to improve it! Happy tracking! 🎯
+	4. Pull Your image from ECR in EC2
 
----
+	5. Lauch your docker image in EC2
+
+	#Policy:
+
+	1. AmazonEC2ContainerRegistryFullAccess
+
+	2. AmazonEC2FullAccess
+
+	
+## 3. Create ECR repo to store/save docker image
+    - Save the URI: 315865595366.dkr.ecr.us-east-1.amazonaws.com/youtube
+
+	
+## 4. Create EC2 machine (Ubuntu) 
+
+## 5. Open EC2 and Install docker in EC2 Machine:
+	
+	
+	#optinal
+
+	sudo apt-get update -y
+
+	sudo apt-get upgrade
+	
+	#required
+
+	curl -fsSL https://get.docker.com -o get-docker.sh
+
+	sudo sh get-docker.sh
+
+	sudo usermod -aG docker ubuntu
+
+	newgrp docker
+	
+# 6. Configure EC2 as self-hosted runner:
+    setting>actions>runner>new self hosted runner> choose os> then run command one by one
+
+
+# 7. Setup github secrets:
+
+    AWS_ACCESS_KEY_ID=
+
+    AWS_SECRET_ACCESS_KEY=
+
+    AWS_REGION = us-east-1
+
+    AWS_ECR_LOGIN_URI = demo>>  566373416292.dkr.ecr.ap-south-1.amazonaws.com
+
+    ECR_REPOSITORY_NAME = simple-app
