@@ -14,7 +14,16 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from mlflow.tracking import MlflowClient
 import matplotlib.dates as mdates
-import pickle
+import pickleInsights
+Settings
+Security: Srijanprasad/Striver-DSA
+Security Navigation
+Overview
+Reporting
+Policy
+Vulnerability alerts
+Dependabot
+Security overview
 
 
 app = Flask(__name__)
