@@ -13,4 +13,5 @@
     "http://localhost/*",
     "https://www.googleapis.com/*"
   ]
+  
 }

@@ -39,6 +39,7 @@ def preprocess_comment(comment):
         stop_words = set(stopwords.words('english')) - {'not', 'but', 'however', 'no', 'yet'}
         comment = ' '.join([word for word in comment.split() if word not in stop_words])
 
+
         # Lemmatize the words
         lemmatizer = WordNetLemmatizer()
         comment = ' '.join([lemmatizer.lemmatize(word) for word in comment.split()])
