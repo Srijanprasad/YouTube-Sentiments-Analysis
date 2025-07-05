@@ -40,6 +40,7 @@ def preprocess_comment(comment):
         comment = ' '.join([word for word in comment.split() if word not in stop_words])
 
 
+
         # Lemmatize the words
         lemmatizer = WordNetLemmatizer()
         comment = ' '.join([lemmatizer.lemmatize(word) for word in comment.split()])
