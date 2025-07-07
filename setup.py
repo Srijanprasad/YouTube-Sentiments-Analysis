@@ -1,7 +1,6 @@
 from setuptools import find_packages, setup
 
 setup(
-    name = 'youtube',
     version= '0.0.0',
     author= 'Srijan',
     author_email= 'srijanprasad2006@gmail.com',

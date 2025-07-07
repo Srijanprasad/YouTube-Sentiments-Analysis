@@ -26,6 +26,7 @@ Dependabot
 Security overview
 
 
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
