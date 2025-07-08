@@ -222,6 +222,7 @@ def generate_wordcloud():
         text = ' '.join(preprocessed_comments)
 
         # Generate the word cloud
+        
         wordcloud = WordCloud(
             width=800,
             height=400,
